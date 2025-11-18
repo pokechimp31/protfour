@@ -1,19 +1,17 @@
 // -------------------------------
 // ProtIV Domain Cost Tracker
-// Persistent, real-time version
+// Full dollar + decimal penny tracker
 // -------------------------------
 
-// 1. Set the domain purchase date
-const purchaseDate = new Date("2025-11-17T20:00:00"); // November 17, 2025, 8:00 PM
+const purchaseDate = new Date("2025-11-17T20:00:00");
+const totalSecondsPerCent = 8 * 3600 + 38 * 60 + 41;
 
-// 2. Total seconds per cent
-const totalSecondsPerCent = 8 * 3600 + 38 * 60 + 41; // 8 hours, 38 minutes, 41 seconds
-
-// 3. Get HTML elements
+// Get HTML elements
 const amountElement = document.getElementById('amount');
 const countdownElement = document.getElementById('countdown');
+const amountPenniesElement = document.getElementById('amount-pennies');
+const countdownPenniesElement = document.getElementById('countdown-pennies');
 
-// 4. Format seconds as HH:MM:SS
 function formatTime(seconds) {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -21,24 +19,25 @@ function formatTime(seconds) {
     return `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
 }
 
-// 5. Update the tracker
 function updateTracker() {
     const now = new Date();
     const secondsElapsed = (now - purchaseDate) / 1000;
 
-    // Calculate total cents spent
+    // ---- Full dollar tracker (existing) ----
     const centsSpent = Math.floor(secondsElapsed / totalSecondsPerCent);
-    const amount = (centsSpent * 0.01).toFixed(2);
-    amountElement.textContent = amount;
+    amountElement.textContent = (centsSpent * 0.01).toFixed(2);
 
-    // Calculate countdown to next cent
     const secondsIntoCurrentCent = secondsElapsed % totalSecondsPerCent;
-    const secondsRemaining = totalSecondsPerCent - secondsIntoCurrentCent;
-    countdownElement.textContent = formatTime(secondsRemaining);
+    countdownElement.textContent = formatTime(totalSecondsPerCent - secondsIntoCurrentCent);
+
+    // ---- Decimal penny tracker (new) ----
+    const decimalPennies = (secondsElapsed / totalSecondsPerCent).toFixed(5); // fraction of a penny
+    amountPenniesElement.textContent = decimalPennies;
+
+    const secondsIntoDecimal = secondsElapsed % totalSecondsPerCent;
+    countdownPenniesElement.textContent = formatTime(totalSecondsPerCent - secondsIntoDecimal);
 }
 
-// 6. Update every second
+// Update every second
 setInterval(updateTracker, 1000);
-
-// 7. Run immediately on page load
 updateTracker();
