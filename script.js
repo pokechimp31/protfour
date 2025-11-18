@@ -31,7 +31,7 @@ function updateTracker() {
     countdownElement.textContent = formatTime(totalSecondsPerCent - secondsIntoCurrentCent);
 
     // ---- Decimal penny tracker (new) ----
-    const decimalPennies = (secondsElapsed / totalSecondsPerCent).toFixed(5); // fraction of a penny
+    const decimalPennies = (secondsElapsed / totalSecondsPerCent).toFixed(4); // fraction of a penny
     amountPenniesElement.textContent = decimalPennies;
 
     const secondsIntoDecimal = secondsElapsed % totalSecondsPerCent;
