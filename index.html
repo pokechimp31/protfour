@@ -1,39 +1,1083 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>Prot IV</title>
-    <link rel="icon" type="image/png" href="canvas.png" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP European History — Complete Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0DFA0;
+    --gold-dark: #8B6914;
+    --ink: #1A1612;
+    --ink-muted: #4A3F35;
+    --ink-faint: #7A6E65;
+    --parchment: #FAF6EE;
+    --parchment-dark: #F0E8D5;
+    --parchment-border: #D9CCBA;
+    --red: #8B2020;
+    --red-light: #F5E0E0;
+    --teal: #1A5C5C;
+    --teal-light: #D6EDED;
+    --navy: #1A2C4A;
+    --navy-light: #D6DFF0;
+    --green: #2A5C2A;
+    --green-light: #D6EDD6;
+    --purple: #4A2080;
+    --purple-light: #E5D6F5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    background: var(--navy);
+    color: #fff;
+    padding: 0.4rem 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--gold-light);
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A3F5E 100%);
+    color: #fff;
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(201,168,76,0.04) 40px,
+      rgba(201,168,76,0.04) 80px
+    );
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    position: relative;
+    line-height: 1.2;
+  }
+
+  header p {
+    margin-top: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    font-size: 1.05rem;
+    font-style: italic;
+    position: relative;
+  }
+
+  .score-badge {
+    display: inline-block;
+    margin-top: 1.25rem;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 0.4rem 1.5rem;
+    border-radius: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+
+  nav {
+    background: #fff;
+    border-bottom: 2px solid var(--parchment-border);
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  nav button {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0.9rem 1.1rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  nav button:hover { color: var(--navy); background: var(--navy-light); }
+  nav button.active {
+    color: var(--navy);
+    border-bottom-color: var(--gold);
+    background: var(--parchment);
+  }
+
+  main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ---- Section headers ---- */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 0.6rem;
+  }
+  .section-intro {
+    color: var(--ink-muted);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* ---- Unit cards ---- */
+  .unit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+
+  .unit-card {
+    background: #fff;
+    border: 1px solid var(--parchment-border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .unit-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+  .unit-card-header {
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--parchment-border);
+  }
+
+  .unit-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.25rem;
+  }
+
+  .unit-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .unit-date {
+    display: inline-block;
+    margin-top: 0.4rem;
+    background: var(--gold-light);
+    color: var(--gold-dark);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  .unit-card-body { padding: 1rem 1.25rem 1.25rem; }
+
+  .unit-card-body p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--ink-muted);
+    margin-bottom: 0.85rem;
+  }
+
+  .people-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .person-tag {
+    font-size: 0.75rem;
+    background: var(--navy-light);
+    color: var(--navy);
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .niche-box {
+    background: var(--parchment-dark);
+    border-left: 3px solid var(--gold);
+    padding: 0.65rem 0.9rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .niche-box .niche-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .niche-box p {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    margin: 0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* Exam format section */
+  .format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+
+  .format-card {
+    background: #fff;
+    border: 1px solid var(--parchment-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .format-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    margin: 0 auto 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .format-icon.mcq { background: var(--navy-light); color: var(--navy); }
+  .format-icon.saq { background: var(--teal-light); color: var(--teal); }
+  .format-icon.dbq { background: var(--red-light); color: var(--red); }
+  .format-icon.leq { background: var(--purple-light); color: var(--purple); }
+
+  .format-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+  .format-card .pct {
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-dark);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .format-card p { font-size: 0.82rem; color: var(--ink-faint); line-height: 1.5; }
+
+  /* Strategy sections */
+  .strategy-block {
+    background: #fff;
+    border: 1px solid var(--parchment-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .strategy-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--parchment-border);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .strategy-header:hover { background: var(--parchment); }
+
+  .strategy-badge {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 3px;
+    min-width: 52px;
+    text-align: center;
+  }
+
+  .strategy-badge.mcq { background: var(--navy-light); color: var(--navy); }
+  .strategy-badge.saq { background: var(--teal-light); color: var(--teal); }
+  .strategy-badge.dbq { background: var(--red-light); color: var(--red); }
+  .strategy-badge.leq { background: var(--purple-light); color: var(--purple); }
+
+  .strategy-header h3 {
+    flex: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--navy);
+  }
+
+  .strategy-toggle {
+    color: var(--ink-faint);
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+  }
+  .strategy-toggle.open { transform: rotate(180deg); }
+
+  .strategy-body { padding: 1.25rem; display: none; }
+  .strategy-body.open { display: block; }
+
+  .time-strip {
+    background: var(--parchment-dark);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    color: var(--ink-muted);
+    font-style: italic;
+  }
+
+  ol.steps {
+    padding-left: 1.4rem;
+    counter-reset: steps;
+    list-style: none;
+  }
+
+  ol.steps li {
+    counter-increment: steps;
+    position: relative;
+    padding-left: 0.5rem;
+    padding-bottom: 0.85rem;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--ink-muted);
+    border-left: 2px solid var(--parchment-border);
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+  }
+
+  ol.steps li::before {
+    content: counter(steps);
+    position: absolute;
+    left: -1.1rem;
+    top: 0.1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+  }
+
+  ol.steps li strong { color: var(--navy); font-weight: 600; }
+
+  ol.steps li:last-child { border-left-color: transparent; }
+
+  .tip-box {
+    background: var(--green-light);
+    border-left: 3px solid var(--green);
+    padding: 0.75rem 1rem;
+    border-radius: 0 4px 4px 0;
+    margin-top: 1rem;
+  }
+  .tip-box .tip-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .tip-box p { font-size: 0.88rem; color: #2A4A2A; margin: 0; line-height: 1.55; }
+
+  .warn-box {
+    background: var(--red-light);
+    border-left: 3px solid var(--red);
+    padding: 0.75rem 1rem;
+    border-radius: 0 4px 4px 0;
+    margin-top: 0.75rem;
+  }
+  .warn-box p { font-size: 0.88rem; color: #5A1010; margin: 0; line-height: 1.55; }
+  .warn-box .warn-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  /* Rubric table */
+  .rubric-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.875rem; }
+  .rubric-table th {
+    background: var(--navy);
+    color: #fff;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+  .rubric-table td {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--parchment-border);
+    color: var(--ink-muted);
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  .rubric-table tr:nth-child(even) td { background: var(--parchment); }
+  .rubric-table .pts {
+    font-weight: 700;
+    color: var(--gold-dark);
+    font-family: 'Playfair Display', serif;
+    white-space: nowrap;
+  }
+
+  /* Complexity section */
+  .complexity-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem; }
+
+  .complexity-card {
+    background: #fff;
+    border: 1px solid var(--parchment-border);
+    border-radius: 8px;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .complexity-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .complexity-card p {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .complexity-card .example {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--parchment-border);
+    padding-top: 0.5rem;
+  }
+
+  /* Five tab */
+  .five-list { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+  .five-item {
+    background: #fff;
+    border: 1px solid var(--parchment-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .five-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 2rem;
+    text-align: center;
+  }
+  .five-item h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+  .five-item p { font-size: 0.88rem; color: var(--ink-muted); line-height: 1.6; }
+
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.25rem;
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+</style>
 </head>
 <body>
-    <h1 class="centered">
-        Prot IV
-    </h1>
-    <h2 class="centered">
-        <br>
-        <!-- {Buttons will be here soon} -->
-        <!-- UNCOMMENT LATER <a href="branch-printing/3dprinting.html" class="btn">3D Printing</a> <a href="branch-other/random.html" class="btn">Other Things</a> -->
-    <div class="centered">
-        <br>
-        <h2>Time Since Cheese</h2>
-        <h2 id="countup-display">Loading...</h2>
-    </div>
-        <br> This domain costs $10.13 per year
-    </h2>
-    <!-- Dollar tracker -->
-    <div class="container centered">
-        <p>I've spent $<span id="amount">0.00</span> of that so far</p>
-        <p>That means I've spent <span id="amount-pennies">0.00</span> pennies</p>
-        <p>Time until the next penny: <span id="countdown">08:38:41</span></p>
+
+<div class="top-bar">AP European History — Complete Exam Preparation Guide</div>
+
+<header>
+  <h1>AP European History</h1>
+  <p>A complete preparation guide — units, strategies, and the niche details that earn a 5</p>
+  <div class="score-badge">Target Score: 5</div>
+</header>
+
+<nav id="main-nav">
+  <button class="active" onclick="showSection('units')">Units Overview</button>
+  <button onclick="showSection('format')">Exam Format</button>
+  <button onclick="showSection('mcq')">MCQ Strategy</button>
+  <button onclick="showSection('saq')">SAQ Strategy</button>
+  <button onclick="showSection('dbq')">DBQ Strategy</button>
+  <button onclick="showSection('leq')">LEQ Strategy</button>
+  <button onclick="showSection('complexity')">Complexity Point</button>
+  <button onclick="showSection('fives')">Score a 5</button>
+</nav>
+
+<main>
+
+<!-- ========== UNITS ========== -->
+<section id="units" class="section active">
+  <h2 class="section-title">All Nine Units</h2>
+  <p class="section-intro">Each unit includes key dates, essential figures, and one or two niche details to deploy for complexity points in essays.</p>
+
+  <div class="unit-grid">
+
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 1</div>
+        <div class="unit-card-title">Renaissance & Exploration</div>
+        <div class="unit-date">c. 1450 – 1648</div>
+      </div>
+      <div class="unit-card-body">
+        <p>Humanism reshapes art and thought; Italian city-states become cultural powerhouses. Gutenberg's press (c. 1440s) revolutionizes knowledge transmission. Portugal and Spain open oceanic trade routes, beginning the Columbian Exchange.</p>
+        <div class="people-list">
+          <span class="person-tag">Niccolò Machiavelli</span>
+          <span class="person-tag">Lorenzo de' Medici</span>
+          <span class="person-tag">Erasmus of Rotterdam</span>
+          <span class="person-tag">Bartolomé de las Casas</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The <em>querelle des femmes</em> (debate about women's nature) was a real humanist intellectual debate — cite it to show gender complexity in Renaissance thought. Also: the Ottoman conquest of Constantinople (1453) directly accelerated European sea exploration by disrupting Silk Road trade.</p>
+        </div>
+      </div>
     </div>
 
-    <h3 class="centered">
-        <a href="https://github.com/pokechimp31/realpersonalsite" class="btn">Github Repo for this project</a>
-    </h3>
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 2</div>
+        <div class="unit-card-title">Age of Reformation</div>
+        <div class="unit-date">1517 – 1648</div>
+      </div>
+      <div class="unit-card-body">
+        <p>Luther's 95 Theses (1517) fracture Western Christendom. Calvin establishes theocracy in Geneva; the English Reformation is driven more by politics than theology. The Thirty Years' War (1618–1648) is the defining catastrophe, ending with the Peace of Westphalia.</p>
+        <div class="people-list">
+          <span class="person-tag">Martin Luther</span>
+          <span class="person-tag">John Calvin</span>
+          <span class="person-tag">Ignatius of Loyola</span>
+          <span class="person-tag">Henry VIII</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The Radical Reformation (Anabaptists, Mennonites) was rejected by <em>both</em> Catholics and mainstream Protestants — useful for showing internal Protestant divisions. Peace of Westphalia (1648) established the principle of <em>cuius regio, eius religio</em> and is often cited as the birth of the modern state system.</p>
+        </div>
+      </div>
+    </div>
 
-    <!-- JS -->
-    <script src="meltdown.js"></script>
-    <script src="script.js"></script>
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 3</div>
+        <div class="unit-card-title">Absolutism & Constitutionalism</div>
+        <div class="unit-date">1648 – 1815</div>
+      </div>
+      <div class="unit-card-body">
+        <p>France under Louis XIV epitomizes absolutism — Versailles is a political tool. Meanwhile England develops limited monarchy through the Glorious Revolution (1688) and the Bill of Rights (1689). The Dutch Republic offers a constitutional alternative model.</p>
+        <div class="people-list">
+          <span class="person-tag">Louis XIV</span>
+          <span class="person-tag">Cardinal Richelieu</span>
+          <span class="person-tag">William III of Orange</span>
+          <span class="person-tag">Thomas Hobbes</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The <em>Fronde</em> (1648–1653), a series of civil wars during Louis XIV's childhood, directly shaped his obsession with centralized control — cite it to explain <em>why</em> absolutism developed as it did. Prussia's "Soldier-King" Frederick William I built the most militarized state per capita in Europe, laying the ground for Frederick the Great.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 4</div>
+        <div class="unit-card-title">Scientific Revolution & Enlightenment</div>
+        <div class="unit-date">1648 – 1815</div>
+      </div>
+      <div class="unit-card-body">
+        <p>Copernicus, Galileo, and Newton overturn medieval cosmology. The Enlightenment applies reason to society — philosophes attack the Church, advocate toleration, and inspire revolutions. The <em>Encyclopédie</em> (1751) synthesizes and spreads Enlightenment thought.</p>
+        <div class="people-list">
+          <span class="person-tag">Isaac Newton</span>
+          <span class="person-tag">John Locke</span>
+          <span class="person-tag">Voltaire</span>
+          <span class="person-tag">Mary Wollstonecraft</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>Rousseau's <em>Social Contract</em> diverged sharply from Locke — Rousseau emphasized collective sovereignty over individual rights, making him the intellectual ancestor of both democracy <em>and</em> totalitarianism. Also: "Enlightened despotism" (Frederick the Great, Catherine the Great, Joseph II) often reformed selectively — cite Joseph II's failed peasant reforms in Austria for a great counterargument.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 5</div>
+        <div class="unit-card-title">French Revolution & Napoleon</div>
+        <div class="unit-date">1789 – 1815</div>
+      </div>
+      <div class="unit-card-body">
+        <p>Financial crisis and Enlightenment ideals collide — the Estates-General triggers revolution. Phases move from constitutional monarchy to the radical Terror (1793–94) to the Directory and finally Napoleon's Empire. The Congress of Vienna (1814–15) tries to restore order.</p>
+        <div class="people-list">
+          <span class="person-tag">Maximilien Robespierre</span>
+          <span class="person-tag">Napoleon Bonaparte</span>
+          <span class="person-tag">Edmund Burke</span>
+          <span class="person-tag">Olympe de Gouges</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The Haitian Revolution (1791–1804), inspired by French revolutionary ideals but then suppressed by Napoleon, is a powerful global connection — France's most profitable colony became the only successful slave revolt in history. Olympe de Gouges' <em>Declaration of the Rights of Woman</em> (1791) directly challenges the Revolution's exclusion of women.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 6</div>
+        <div class="unit-card-title">Industrialization & Its Effects</div>
+        <div class="unit-date">1815 – 1914</div>
+      </div>
+      <div class="unit-card-body">
+        <p>Britain industrializes first (1760s–1830s), spreading to the Continent by mid-century. Urbanization creates new social classes and miserable working conditions. Responses include Marxism, labor unions, and social reforms. The "Second Industrial Revolution" (steel, chemicals, electricity) transforms the economy again after 1870.</p>
+        <div class="people-list">
+          <span class="person-tag">Karl Marx</span>
+          <span class="person-tag">Robert Owen</span>
+          <span class="person-tag">Friedrich Engels</span>
+          <span class="person-tag">Jeremy Bentham</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The British Corn Laws (repealed 1846) show the tension between landed aristocracy and industrial bourgeoisie — their repeal marks the triumph of free-trade liberalism. Also: proto-industrialization (cottage industries) predated factory industrialization; rural textile workers were often displaced, not just urban ones.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 7</div>
+        <div class="unit-card-title">19th Century Ideologies & Nationalism</div>
+        <div class="unit-date">1815 – 1914</div>
+      </div>
+      <div class="unit-card-body">
+        <p>Liberalism, conservatism, nationalism, socialism, and Romanticism compete. The Revolutions of 1848 ("Springtime of Nations") fail across Europe but accelerate nationalist movements. German and Italian unification succeed by 1871 through "blood and iron" realpolitik. The "Eastern Question" destabilizes the Ottoman Empire.</p>
+        <div class="people-list">
+          <span class="person-tag">Otto von Bismarck</span>
+          <span class="person-tag">Giuseppe Garibaldi</span>
+          <span class="person-tag">Metternich</span>
+          <span class="person-tag">Giuseppe Mazzini</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The <em>Kulturkampf</em> (1870s) — Bismarck's campaign against Catholic influence in Germany — shows that even after unification, internal tensions remained. Bismarck's "social insurance" laws of the 1880s (accident, health, pension) were strategically designed to preempt socialist political power, not from genuine care for workers.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 8</div>
+        <div class="unit-card-title">20th Century Global Conflicts</div>
+        <div class="unit-date">1914 – 1945</div>
+      </div>
+      <div class="unit-card-body">
+        <p>WWI dismantles empires and produces the Treaty of Versailles (1919) — whose harsh terms fuel fascism. The Russian Revolution (1917) produces the Soviet Union. The Great Depression and the failures of Weimar democracy enable Hitler. WWII brings the Holocaust and total war; ends with European devastation and American/Soviet dominance.</p>
+        <div class="people-list">
+          <span class="person-tag">Adolf Hitler</span>
+          <span class="person-tag">Vladimir Lenin</span>
+          <span class="person-tag">Woodrow Wilson</span>
+          <span class="person-tag">Benito Mussolini</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The "stab-in-the-back myth" (<em>Dolchstoßlegende</em>) — the false claim that Germany was undefeated militarily in WWI but betrayed by civilians — was actively cultivated by the German military and became central to Nazi propaganda. Also: the Molotov-Ribbentrop Pact (1939) shocked the left by showing Soviet cooperation with Nazi Germany.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-number">Unit 9</div>
+        <div class="unit-card-title">Cold War & Contemporary Europe</div>
+        <div class="unit-date">1945 – Present</div>
+      </div>
+      <div class="unit-card-body">
+        <p>Europe splits between NATO and Warsaw Pact. Decolonization transforms European empires. Western Europe rebuilds with the Marshall Plan and forms the EEC (precursor to the EU). 1989 revolutions collapse the Iron Curtain; the Soviet Union dissolves 1991. European integration deepens but faces new nationalist challenges.</p>
+        <div class="people-list">
+          <span class="person-tag">Winston Churchill</span>
+          <span class="person-tag">Mikhail Gorbachev</span>
+          <span class="person-tag">Simone de Beauvoir</span>
+          <span class="person-tag">Charles de Gaulle</span>
+        </div>
+        <div class="niche-box">
+          <div class="niche-label">Complexity Points</div>
+          <p>The <em>Ostpolitik</em> of Willy Brandt (1969–74) — West Germany's deliberate normalization of relations with Eastern Europe — shows that Cold War divisions were not simply bilateral; Europe had its own agency. Also: decolonization and postwar migration (Algerians to France, West Indians to Britain) fundamentally changed European social composition, often creating new forms of racism and political conflict.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== FORMAT ========== -->
+<section id="format" class="section">
+  <h2 class="section-title">Exam Format at a Glance</h2>
+  <p class="section-intro">The AP Euro exam is 3 hours and 15 minutes total. Understanding the structure lets you allocate time strategically.</p>
+
+  <div class="format-grid">
+    <div class="format-card">
+      <div class="format-icon mcq">MCQ</div>
+      <h3>Multiple Choice</h3>
+      <div class="pct">40%</div>
+      <p>55 questions · 55 minutes<br>Section I, Part A<br>~1 min per question</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon saq">SAQ</div>
+      <h3>Short Answer</h3>
+      <div class="pct">20%</div>
+      <p>3 questions · 40 minutes<br>Section I, Part B<br>~13 min per question</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon dbq">DBQ</div>
+      <h3>Document-Based</h3>
+      <div class="pct">25%</div>
+      <p>1 question · 60 minutes<br>Section II, Part A<br>Includes 15 min reading</p>
+    </div>
+    <div class="format-card">
+      <div class="format-icon leq">LEQ</div>
+      <h3>Long Essay</h3>
+      <div class="pct">15%</div>
+      <p>1 of 3 choices · 40 minutes<br>Section II, Part B<br>Full argumentative essay</p>
+    </div>
+  </div>
+
+  <div class="strategy-block">
+    <div class="strategy-header" onclick="toggleStrategy(this)">
+      <span class="strategy-badge mcq">Note</span>
+      <h3>Section I: No calculators, one combined period</h3>
+      <span class="strategy-toggle">▼</span>
+    </div>
+    <div class="strategy-body">
+      <p style="font-size:0.92rem; color:var(--ink-muted); line-height:1.7;">MCQ and SAQ are both in Section I. After the 55-minute MCQ section, you move directly to SAQ — there is no break. Section II (DBQ + LEQ) begins separately. Each question type draws from all nine units but questions are often clustered around source-based stimulus material (art, documents, maps, data). You are <strong>not</strong> penalized for wrong answers on MCQ, so always guess.</p>
+    </div>
+  </div>
+
+  <table class="rubric-table">
+    <thead>
+      <tr><th>Section</th><th>Question Type</th><th>Points Available</th><th>% of Score</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>I-A</td><td>Multiple Choice (55 Qs)</td><td class="pts">55</td><td>40%</td></tr>
+      <tr><td>I-B</td><td>Short Answer (3 Qs)</td><td class="pts">9 (3 each)</td><td>20%</td></tr>
+      <tr><td>II-A</td><td>Document-Based Question</td><td class="pts">7</td><td>25%</td></tr>
+      <tr><td>II-B</td><td>Long Essay Question</td><td class="pts">6</td><td>15%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== MCQ ========== -->
+<section id="mcq" class="section">
+  <h2 class="section-title">MCQ Strategy</h2>
+  <p class="section-intro">55 questions, 55 minutes. Nearly all MCQ questions are stimulus-based — a primary source, image, map, or data set followed by 3–4 questions. The skill is reading the source analytically, not just remembering facts.</p>
+
+  <div class="strategy-block">
+    <div class="strategy-header" onclick="toggleStrategy(this)">
+      <span class="strategy-badge mcq">MCQ</span>
+      <h3>Step-by-Step Approach (per stimulus set)</h3>
+      <span class="strategy-toggle open">▼</span>
+    </div>
+    <div class="strategy-body open">
+      <div class="time-strip">Target ~55 seconds per question — stimulus sets of 3–4 questions should take 3–4 minutes total</div>
+      <ol class="steps">
+        <li><strong>Read the attribution first.</strong> Who wrote it? When? For what audience? This context often narrows the answer before you read the body.</li>
+        <li><strong>Skim the questions before the full source.</strong> Knowing what's being asked tells you what to look for and saves re-reading.</li>
+        <li><strong>Read actively — annotate mentally.</strong> Identify the main argument, any evidence of bias, and the historical context. AP Euro loves asking about "historical situation" and "point of view."</li>
+        <li><strong>Eliminate confidently.</strong> Two answer choices are usually obviously wrong. Focus your energy on the remaining two.</li>
+        <li><strong>Watch for "extent" and "primarily" qualifiers.</strong> These words signal that partial truths are traps — you want the BEST answer, not just a true one.</li>
+        <li><strong>Never leave blank.</strong> No penalty for wrong answers. If stuck after 45 seconds, mark your best guess, flag the question, and move on.</li>
+      </ol>
+      <div class="tip-box">
+        <div class="tip-label">High-Yield Tip</div>
+        <p>The most commonly tested skill is <em>contextualization</em> — connecting a source to broader historical trends. Practice asking: "What larger development does this source reflect?" for any primary source you read.</p>
+      </div>
+      <div class="warn-box">
+        <div class="warn-label">Common Trap</div>
+        <p>Answer choices that are historically true but don't answer the specific question asked. Always re-read the question stem after selecting your answer to confirm it actually responds to what was asked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SAQ ========== -->
+<section id="saq" class="section">
+  <h2 class="section-title">SAQ Strategy</h2>
+  <p class="section-intro">3 questions, 40 minutes. Each SAQ has three sub-parts (a, b, c) each worth 1 point. Total: 9 points. You must answer SAQs 1 and 2; for SAQ 3 and 4 you choose one. No thesis required — but specific evidence is essential.</p>
+
+  <div class="strategy-block">
+    <div class="strategy-header" onclick="toggleStrategy(this)">
+      <span class="strategy-badge saq">SAQ</span>
+      <h3>The HAPP Formula for Every Sub-Part</h3>
+      <span class="strategy-toggle open">▼</span>
+    </div>
+    <div class="strategy-body open">
+      <div class="time-strip">Aim for ~4 minutes per sub-part, ~13 minutes per full SAQ — leave 1 minute to check you've answered all parts</div>
+      <ol class="steps">
+        <li><strong>Hook:</strong> One sentence that directly addresses the question verb (describe, explain, evaluate). Don't waste time with a thesis — get to the point immediately.</li>
+        <li><strong>Assert:</strong> Make a clear claim that fully answers the sub-question. Be direct: "The most significant cause was…" or "One way X changed was…"</li>
+        <li><strong>Prove:</strong> Provide a <em>specific</em> piece of historical evidence — a name, date, event, treaty, or text. Vague evidence earns no credit. "The Edict of Nantes (1598)" beats "a religious toleration decree."</li>
+        <li><strong>Place:</strong> (Optional but powerful) One sentence connecting your evidence to a broader historical process. This can distinguish a strong answer from a mechanical one.</li>
+      </ol>
+      <div class="tip-box">
+        <div class="tip-label">Format Tip</div>
+        <p>SAQs don't need paragraphs — you can write labeled responses: "a) [your response]" etc. Bullet points are acceptable. Prioritize clarity and specificity over polished prose.</p>
+      </div>
+      <div class="warn-box">
+        <div class="warn-label">Most Common Mistake</div>
+        <p>Writing a paragraph about general knowledge without directly answering the specific sub-question asked. Read the question verb carefully — "describe" (what happened) ≠ "explain" (why it happened) ≠ "evaluate" (what was the significance).</p>
+      </div>
+
+      <table class="rubric-table" style="margin-top:1.25rem">
+        <thead><tr><th>Verb</th><th>What it demands</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Describe</strong></td><td>State characteristics or features. What did it look like? What happened?</td></tr>
+          <tr><td><strong>Explain</strong></td><td>Give causes or effects. Why? How? What were the consequences?</td></tr>
+          <tr><td><strong>Evaluate</strong></td><td>Make a judgment about significance, extent, or validity. How important? To what degree?</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========== DBQ ========== -->
+<section id="dbq" class="section">
+  <h2 class="section-title">DBQ Strategy</h2>
+  <p class="section-intro">1 question, 60 minutes (including 15 minutes of suggested reading time). 7 points possible. The DBQ tests your ability to construct a historical argument using 5–7 provided primary sources. This is the highest-stakes single question on the exam.</p>
+
+  <table class="rubric-table">
+    <thead>
+      <tr><th>Skill</th><th>Points</th><th>What You Need</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Thesis/Claim</td><td class="pts">1</td><td>Defensible claim that responds to the prompt — must be more than a restatement</td></tr>
+      <tr><td>Contextualization</td><td class="pts">1</td><td>Describe a broader historical context <em>before or after</em> the prompt's time period — must be a full paragraph, not one sentence</td></tr>
+      <tr><td>Evidence: Document Content</td><td class="pts">2</td><td>Use content from at least 3 docs (1 pt) or 6 docs (2 pts) to support your argument</td></tr>
+      <tr><td>Evidence: Outside the Docs</td><td class="pts">1</td><td>Use specific evidence beyond the documents that supports your argument</td></tr>
+      <tr><td>Analysis & Reasoning: Sourcing</td><td class="pts">1</td><td>For 3 docs: explain how historical situation, purpose, audience, OR point of view shapes meaning</td></tr>
+      <tr><td>Analysis & Reasoning: Complexity</td><td class="pts">1</td><td>Demonstrate a complex understanding — see Complexity tab for strategies</td></tr>
+    </tbody>
+  </table>
+
+  <div class="strategy-block" style="margin-top:1.5rem">
+    <div class="strategy-header" onclick="toggleStrategy(this)">
+      <span class="strategy-badge dbq">DBQ</span>
+      <h3>15-Minute Reading Period Protocol</h3>
+      <span class="strategy-toggle open">▼</span>
+    </div>
+    <div class="strategy-body open">
+      <ol class="steps">
+        <li><strong>Read the prompt first (1 min).</strong> Underline the key task, time period, and topic. Everything you do should serve the prompt.</li>
+        <li><strong>Sort the documents (7 min).</strong> Read each document quickly. Annotate the margin: note the main point, the <em>HAPP</em> attribution (Historical Situation, Audience, Purpose, Point of View), and which side of your argument it supports.</li>
+        <li><strong>Identify your groupings (3 min).</strong> A strong DBQ essay has 2–3 body paragraphs, each organized around a theme (NOT just "Document 1 says X…"). Find the common threads — group docs by cause, by type of response, by class/gender/region.</li>
+        <li><strong>Draft your thesis mentally (2 min).</strong> Your thesis must make a defensible claim AND preview your line of reasoning (your categories). Write the first sentence in your head before you write anything.</li>
+        <li><strong>Note your outside evidence (2 min).</strong> Identify 1–2 specific facts not in the documents that you'll deploy. Write them in your margin before you forget under timed pressure.</li>
+      </ol>
+      <div class="tip-box">
+        <div class="tip-label">Sourcing Pro Tip</div>
+        <p>Don't just label sourcing ("This document shows bias because…"). <em>Explain the effect</em>: "Because this pamphlet was written by a Protestant reformer addressing lay Christians, it emphasizes scripture over tradition — which means it may overstate popular support for reform and understate continued Catholic piety." That's a full sourcing analysis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LEQ ========== -->
+<section id="leq" class="section">
+  <h2 class="section-title">LEQ Strategy</h2>
+  <p class="section-intro">1 essay, 40 minutes, 6 points. You choose one of three prompts spanning different time periods. The LEQ is a fully argumentative essay with no documents provided — your own knowledge is the only evidence.</p>
+
+  <table class="rubric-table">
+    <thead>
+      <tr><th>Skill</th><th>Points</th><th>What You Need</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Thesis/Claim</td><td class="pts">1</td><td>Defensible thesis that makes a historically defensible claim beyond restating the prompt</td></tr>
+      <tr><td>Contextualization</td><td class="pts">1</td><td>Accurate description of broader context preceding, during, or following the topic — must be developed, not just mentioned</td></tr>
+      <tr><td>Evidence</td><td class="pts">2</td><td>Specific examples (1 pt) or specific examples used to support an argument (2 pts)</td></tr>
+      <tr><td>Analysis & Reasoning</td><td class="pts">2</td><td>Demonstrates a historical reasoning skill: causation, continuity/change, or comparison — plus complexity (1 pt each)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="strategy-block" style="margin-top:1.5rem">
+    <div class="strategy-header" onclick="toggleStrategy(this)">
+      <span class="strategy-badge leq">LEQ</span>
+      <h3>Choosing Your Prompt — The 2-Minute Decision</h3>
+      <span class="strategy-toggle open">▼</span>
+    </div>
+    <div class="strategy-body open">
+      <ol class="steps">
+        <li><strong>Read all three prompts fully.</strong> Each covers a different time period. Never skip this — sometimes a prompt you overlooked is your strongest.</li>
+        <li><strong>Ask: Can I write a complex thesis?</strong> A great topic you only know vaguely beats a topic you know superficially. If you can immediately think of counterarguments and a nuanced claim, that's your prompt.</li>
+        <li><strong>Count your specific evidence.</strong> Mentally list 4–5 specific facts for each option. The prompt with the richest evidence base wins — even if another seems more interesting.</li>
+        <li><strong>Identify your reasoning skill.</strong> The prompt will signal causation ("explain the causes of…"), continuity/change ("evaluate the extent to which…changed"), or comparison ("compare…"). Match your strongest skill to the prompt.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="strategy-block">
+    <div class="strategy-header" onclick="toggleStrategy(this)">
+      <span class="strategy-badge leq">LEQ</span>
+      <h3>Essay Structure: The 40-Minute Plan</h3>
+      <span class="strategy-toggle open">▼</span>
+    </div>
+    <div class="strategy-body open">
+      <div class="time-strip">5 min outline → 30 min writing → 5 min review</div>
+      <ol class="steps">
+        <li><strong>Intro paragraph (5 min writing):</strong> Start with contextualization (2–4 sentences of broader historical background). Then write your thesis — a single sentence with a defensible claim AND a line of reasoning (your categories). Do not write a hook; dive straight into context.</li>
+        <li><strong>Body paragraph 1 (8 min):</strong> Topic sentence → 2–3 pieces of specific evidence → analysis connecting evidence to thesis. Each body paragraph should support one category from your thesis.</li>
+        <li><strong>Body paragraph 2 (8 min):</strong> Same structure. Introduce your strongest evidence here. This is where complexity begins to emerge — acknowledge a counter-trend or limitation.</li>
+        <li><strong>Body paragraph 3 (7 min, optional but recommended):</strong> Third category or a "however" paragraph that introduces nuance. This is where your complexity point lives — a corroboration, tension, or broader implication.</li>
+        <li><strong>Conclusion (2 min):</strong> Not required for the rubric, but a single sentence restating your thesis in new words takes 30 seconds and shows control. Don't introduce new evidence here.</li>
+      </ol>
+      <div class="tip-box">
+        <div class="tip-label">Thesis Formula That Works</div>
+        <p>Try: <em>"Although [counterargument or concession], [main claim] because [reason 1], [reason 2], and [reason 3]."</em> This structure builds complexity into the thesis itself and gives you a road map for every body paragraph.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== COMPLEXITY ========== -->
+<section id="complexity" class="section">
+  <h2 class="section-title">Earning the Complexity Point</h2>
+  <p class="section-intro">The complexity point is worth 1 point in both the DBQ and LEQ — it's the hardest to earn and often separates a 4 from a 5. It requires demonstrating a nuanced understanding that goes beyond a straightforward argument. There are four main pathways.</p>
+
+  <div class="complexity-grid">
+    <div class="complexity-card">
+      <h4>Corroboration</h4>
+      <p>Explain how multiple lines of evidence (or document types) point to the same conclusion — but from different vantage points, showing the pattern holds across categories.</p>
+      <div class="example">e.g., Show that both economic AND religious evidence support your argument about the Reformation, demonstrating that the change was multidimensional.</div>
+    </div>
+    <div class="complexity-card">
+      <h4>Contradiction / Tension</h4>
+      <p>Acknowledge and explain a piece of evidence or a trend that appears to undermine your thesis — then explain why your argument is still valid despite the tension.</p>
+      <div class="example">e.g., Acknowledge that England remained Protestant even when Spain exerted massive pressure, but explain this strengthens (not weakens) your argument about sovereignty.</div>
+    </div>
+    <div class="complexity-card">
+      <h4>Broader / Narrower Lens</h4>
+      <p>Zoom out to a global/long-term context, or zoom in to show how your argument affected a specific group (women, peasants, a minority) in a different way than the main narrative suggests.</p>
+      <div class="example">e.g., Argue that the Industrial Revolution's effects differed drastically for rural women versus urban male factory workers — complicating a uniform "progress" narrative.</div>
+    </div>
+    <div class="complexity-card">
+      <h4>Continuity within Change</h4>
+      <p>Show that while your argument demonstrates significant change, certain underlying structures or inequalities persisted — demonstrating that change was more limited or uneven than it first appears.</p>
+      <div class="example">e.g., Even after Napoleon's legal reforms codified Enlightenment principles, gender inequality was entrenched — the Napoleonic Code actually restricted women's legal rights vs. revolutionary legislation.</div>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:1.5rem">
+    <div class="tip-label">The Niche Evidence Advantage</div>
+    <p>The niche facts listed in each unit card (the Fronde, the Dolchstoßlegende, Ostpolitik, the querelle des femmes, etc.) are ideal complexity-point tools. When you deploy an obscure but accurate detail that complicates or broadens your argument, it signals to the reader that you understand the period deeply — not just the surface narrative. Complexity is about showing the <em>limits</em> of your own argument, or its <em>surprising</em> implications.</p>
+  </div>
+</section>
+
+<!-- ========== FIVES ========== -->
+<section id="fives" class="section">
+  <h2 class="section-title">How to Score a 5</h2>
+  <p class="section-intro">A 5 on AP Euro typically requires roughly 70–75% of available points. These are the highest-leverage habits of top scorers.</p>
+
+  <div class="five-list">
+    <div class="five-item">
+      <div class="five-num">1</div>
+      <div>
+        <h4>Master the Contextualization Paragraph</h4>
+        <p>Contextualization is worth 1 point in both the DBQ and the LEQ — that's 2 points out of 13 total essay points just for setting historical context. Many students either skip it or write one throwaway sentence (which earns nothing). Practice writing a full 3–4 sentence contextualization paragraph for every major topic you study. It must describe a genuine historical development — not just "things were happening at this time." Connect it explicitly to the prompt.</p>
+      </div>
+    </div>
+    <div class="five-item">
+      <div class="five-num">2</div>
+      <div>
+        <h4>Earn Every SAQ Point — They're the Easiest</h4>
+        <p>SAQs reward precision and are the most mechanical of all question types. Every sub-part is worth exactly 1 point, and there's no thesis required. Yet many students lose SAQ points by being vague. Practice writing one-paragraph SAQ responses timed at 4 minutes. Use the HAPP format and make sure every answer contains a specific name, date, or event — not just general claims.</p>
+      </div>
+    </div>
+    <div class="five-item">
+      <div class="five-num">3</div>
+      <div>
+        <h4>Use All 6+ Documents in the DBQ</h4>
+        <p>The difference between 1 and 2 points for document evidence is using 3 documents versus 6 documents. Aiming to use all 7 is not harder — you've already read them during the reading period. Make sure each document you cite has its content explained (not just referenced by name) and is connected to your argument. Don't just quote — <em>explain what the document shows about your thesis</em>.</p>
+      </div>
+    </div>
+    <div class="five-item">
+      <div class="five-num">4</div>
+      <div>
+        <h4>Pre-Load One "Outside Evidence" Fact Per Era</h4>
+        <p>The DBQ's outside evidence point is free — you just need one specific fact not in the documents. Prepare 2–3 go-to outside evidence facts for each major era before the exam. These don't need to be dramatic; they just need to be specific and connected to your argument. The niche details in this guide are ideal candidates.</p>
+      </div>
+    </div>
+    <div class="five-item">
+      <div class="five-num">5</div>
+      <div>
+        <h4>Know Your Chronology Cold</h4>
+        <p>AP Euro spans 600 years. The MCQ and SAQs constantly probe your ability to place developments in sequence. The most common error is confusing pre-1648 events with post-1648 ones, or conflating First and Second Industrial Revolution dynamics. Build a personal timeline covering the 9 major unit date ranges, and practice placing 10 key events within each. Chronological confusion costs points across every section of the exam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>AP European History Study Guide · All content aligned to AP Euro Course and Exam Description · Good luck on exam day.</footer>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const btns = document.querySelectorAll('nav button');
+    const map = { units:0, format:1, mcq:2, saq:3, dbq:4, leq:5, complexity:6, fives:7 };
+    btns[map[id]].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleStrategy(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.strategy-toggle');
+    body.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+</script>
 </body>
 </html>
